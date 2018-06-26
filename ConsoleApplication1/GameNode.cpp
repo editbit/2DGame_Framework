@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameNode.h"
 
+
 //=============================================================
 //	## 초기화 ## init(void)
 //=============================================================
@@ -9,7 +10,16 @@ HRESULT GameNode::init(void)
 	SetTimer(_hWnd, 1, 10, NULL);			// 타이머 초기화
 	KEYMANAGER->init();						// 키 매니저 초기화
 	RND->init();
+
+	setBackBuffer();						// 백버퍼 초기화( 이미지 매니저 만든 후 삭제 )
 	return S_OK;
+}
+
+// 조만간 삭제
+void GameNode::setBackBuffer()
+{
+	_backBuffer = new Image;
+	_backBuffer->init(WINSIZEX, WINSIZEY);
 }
 
 //=============================================================
@@ -21,10 +31,16 @@ void GameNode::release(void)
 	// 키 매니저 싱글톤 해제
 	KEYMANAGER->release();
 	KEYMANAGER->releaseSingleton();
+	// 랜덤펑션 싱글톤 해제 ( 싱글톤 연습 )
 	RND->release();
 	RND->releaseSingleton();
+
+	// 백버퍼 이미지 해제( 조만간 지움 )
+	// delete _backBuffer;
+	SAFE_DELETE(_backBuffer);
+/*
 	MYSOCKET->release();
-	MYSOCKET->releaseSingleton();
+	MYSOCKET->releaseSingleton();*/
 }
 
 //=============================================================
@@ -34,7 +50,7 @@ void GameNode::update(void)
 {
 	// 새로고침 (나중에 고성능 타이머를 만든 후에는 사용하지 않는다.)
 	// 더블버퍼링 이후 사용하지 않는다(true => false)
-	InvalidateRect(_hWnd, NULL, TRUE);		// ture == TRUE
+	InvalidateRect(_hWnd, NULL, FALSE);		// ture == TRUE
 }
 
 //=============================================================
@@ -52,8 +68,6 @@ LRESULT GameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 {
 	HDC hdc;
 	PAINTSTRUCT ps;	
-
-	static POINT pt = { 0, 0 };
 
 	switch (iMessage)
 	{

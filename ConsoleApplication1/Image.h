@@ -19,7 +19,7 @@ public:
 		DWORD		redID;		// 리소스 ID,		unsigned long
 		HDC			hMemDC;		// 메모리 DC
 		HBITMAP		hBit;		// 비트맵
-		HBITMAP		hOldBit;	// 올드 비트맵
+		HBITMAP		hOBit;	// 올드 비트맵
 		int			width;		// 이미지 가로 크기
 		int			height;		// 이미지 세로 크기
 		BYTE		loadType;	// 이미지 로드 타입,	unsigned char
@@ -29,7 +29,7 @@ public:
 			redID = 0;
 			hMemDC = NULL;
 			hBit = NULL;
-			hOldBit = NULL;
+			hOBit = NULL;
 			width = 0;
 			height = 0;
 			loadType = LOAD_RESOURCE;
@@ -52,14 +52,13 @@ public:
 	// 이미지 리소스로 초기화( 사용 안함 )
 	HRESULT init(DWORD resID, int width, int height, bool isTrans = FALSE, COLORREF transColor = RGB(0, 0, 0));
 	// 이미지 파일로 초기화 ( 주로 사용 )
-	HRESULT init(char * fileName, int width, int height, bool isTrans = FALSE, COLORREF transColor = RGB(0, 0, 0));
+	HRESULT init(const char * fileName, int width, int height, bool isTrans = FALSE, COLORREF transColor = RGB(0, 0, 0));
 
 	// 해제
 	void release(void);
 	
 	// 렌더
-	void render(HDC hdc);
-	void render(HDC hdc, int destX, int destY);
+	void render(HDC hdc, int destX=0, int destY=0);
 	
 	// DC 얻기
 	inline HDC getMemDC(void) { return _imageInfo->hMemDC; }

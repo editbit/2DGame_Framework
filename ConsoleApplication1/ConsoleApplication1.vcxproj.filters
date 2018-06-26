@@ -39,9 +39,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>GameFramework2D\MainGame</Filter>
     </ClInclude>
-    <ClInclude Include="GameNode.h">
-      <Filter>GameFramework2D\MainGame</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>GameFramework2D\MainGame</Filter>
     </ClInclude>
@@ -60,13 +57,13 @@
     <ClInclude Include="Image.h">
       <Filter>GameFramework2D\Image</Filter>
     </ClInclude>
+    <ClInclude Include="GameNode.h">
+      <Filter>GameFramework2D\MainGame\WinMain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>GameFramework2D\MainGame\WinMain</Filter>
-    </ClCompile>
-    <ClCompile Include="GameNode.cpp">
-      <Filter>GameFramework2D\MainGame</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>GameFramework2D\MainGame\WinMain</Filter>
@@ -82,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Image.cpp">
       <Filter>GameFramework2D\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>GameFramework2D\MainGame\WinMain</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
