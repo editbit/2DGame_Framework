@@ -43,6 +43,9 @@ private:
 	BOOL			_isTrans;		// 배경색 유무( true이면 배경 지우기 )
 	COLORREF		_transColor;	// 지울 배경색 RGB 코드 ( 마젠타 = RGB(255, 0, 255) )
 	
+	LPIMAGE_INFO	_blendImage;	// 알파블렌드 이미지
+	BLENDFUNCTION	_blendFunc;		// 알파블렌드 기능
+
 public:
 	Image();
 	~Image();
@@ -53,6 +56,9 @@ public:
 	HRESULT init(DWORD resID, int width, int height, bool isTrans = FALSE, COLORREF transColor = RGB(0, 0, 0));
 	// 이미지 파일로 초기화 ( 주로 사용 )
 	HRESULT init(const char * fileName, int width, int height, bool isTrans = FALSE, COLORREF transColor = RGB(0, 0, 0));
+	// 알파블렌드 초기화
+	HRESULT initForAlphaBlend(void);
+
 
 	// 해제
 	void release(void);
@@ -60,6 +66,11 @@ public:
 	// 렌더
 	void render(HDC hdc, int destX=0, int destY=0);
 	void render(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
+	// 알파렌더
+	void alphaRender(HDC hdc, BYTE alpha);
+	void alphaRender(HDC hdc, int destX, int destY, BYTE alpha);
+	void alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight, BYTE alpha);
+
 	
 	// DC 얻기
 	inline HDC getMemDC(void) { return _imageInfo->hMemDC; }
