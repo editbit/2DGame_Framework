@@ -92,7 +92,7 @@ void MainGame::render(HDC hdc)
 //======================================================================================
 	// 백 그라운드 이미지 렌더
 
-	_bgImage->render(memDC);
+	_bgImage->render(memDC, 50, 50, 280 + _rc.left, 220, 500, 520);
 	if (KEYMANAGER->isToggleKey(VK_F1))
 	{
 		Rectangle(memDC, _rc);

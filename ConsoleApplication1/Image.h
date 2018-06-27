@@ -59,6 +59,7 @@ public:
 	
 	// ·»´õ
 	void render(HDC hdc, int destX=0, int destY=0);
+	void render(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
 	
 	// DC ¾ò±â
 	inline HDC getMemDC(void) { return _imageInfo->hMemDC; }

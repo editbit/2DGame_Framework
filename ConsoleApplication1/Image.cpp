@@ -167,3 +167,28 @@ void Image::render(HDC hdc, int destX, int destY)
 			_imageInfo->hMemDC, 0, 0, SRCCOPY);
 	}
 }
+
+void Image::render(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight)
+{
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,					//복사할 장소의 DC
+			destX,					//복사될 좌표 시작점 X
+			destY,					//복사될 좌표 시작점 Y
+			sourWidth,		//복사될 이미지 가로크기
+			sourHeight,		//복사될 이미지 세로크기
+			_imageInfo->hMemDC,		//복사될 대상 DC
+			sourX, sourY,					//복사 시작지점
+			sourWidth,		//복사 영역 가로크기
+			sourHeight,		//복사 영역 세로크기
+			_transColor);			//복사할때 제외할 색상 (마젠타)
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+		BitBlt(hdc, destX, destY, sourWidth, sourHeight,
+			_imageInfo->hMemDC, sourX, sourY, SRCCOPY);
+	}
+}
