@@ -14,10 +14,10 @@ HRESULT MainGame::init(void)
 	//_bgImage->init("라이언.bmp", WINSIZEX, WINSIZEY);
 
 	_bgI = new Image;
-	_bgI->init("resource\\라이언.bmp", WINSIZEX, WINSIZEY, true, RGB(0, 0, 0));
+	_bgI->init("resource\\라이언배경.bmp", WINSIZEX, WINSIZEY, true, RGB(0, 0, 0));
 
 	_face = new Image;
-	_face->init("resource\\라이언얼굴.bmp", 150, 150, true, RGB(255, 0, 255));
+	_face->init("resource\\라이언.bmp", 150, 150, true, RGB(255, 0, 255));
 
 	_alpha = 0;
 	_count = 0;
@@ -69,10 +69,16 @@ void MainGame::render(HDC hdc)
 //======================================================================================
 	// 백 그라운드 이미지 렌더
 
+
 	//_bgImage->render(memDC, 0, 0);
 	_bgI->render(memDC);
-	_face->alphaRender(memDC, 800, 500, _alpha);
-	_bgI->alphaRender(memDC, 100, 110, 100, 100, 300, 300, _alpha);
+	_bgI->alphaRender(memDC, 100, 110, 500, 200, 400, 500, _alpha);
+	_face->alphaRender(memDC, 10, 20, _alpha);
+
+
+	char str[128];
+	wsprintf(str, "%d %d", _ptMouse.x, _ptMouse.y);
+	TextOut(memDC, 10, 10, str, strlen(str));
 
 //======================================================================================
 	// 백버퍼의 내용을 HDC에 그린다 

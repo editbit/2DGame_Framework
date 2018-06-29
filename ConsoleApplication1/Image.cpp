@@ -8,6 +8,10 @@ Image::~Image()
 {
 }
 
+
+//=============================================================
+//	## 초기화 ## 
+//=============================================================
 HRESULT Image::init(int width, int height)
 {
 	//재초기화 방지용, 이미지 정보에 값이 들어 있다면 릴리즈먼저 하자
@@ -124,6 +128,140 @@ HRESULT Image::init(const char * fileName, int width, int height, bool isTrans, 
 	return S_OK;
 }
 
+HRESULT Image::init(const char * fileName, float x, float y, int width, int height, bool isTrans, COLORREF transColor)
+{//재초기화 방지용, 이미지 정보에 값이 들어 있다면 릴리즈먼저 하자
+	if (_imageInfo != NULL) this->release();
+
+	//DC 가져오기
+	HDC hdc = GetDC(_hWnd);
+
+	//이미지 정보 구조체 새로 생성후 초기화 하기
+	_imageInfo = new IMAGE_INFO;
+	_imageInfo->loadType = LOAD_FILE;
+	_imageInfo->redID = 0;
+	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
+	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
+	_imageInfo->x = x;
+	_imageInfo->y = y;
+	_imageInfo->width = width;
+	_imageInfo->height = height;
+
+	//파일이름
+	int len = strlen(fileName);
+	_fileName = new char[len + 1];
+	strcpy_s(_fileName, len + 1, fileName);
+
+	//투명키 컬러 셋팅
+	_isTrans = isTrans;
+	_transColor = transColor;
+
+	//리소스 얻는데 실패하면 종료
+	if (_imageInfo->hBit == 0)
+	{
+		this->release();
+		return E_FAIL;
+	}
+
+	//DC 해제하기
+	ReleaseDC(_hWnd, hdc);
+
+	return S_OK;
+}
+
+HRESULT Image::init(const char * fileName, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor)
+{
+	//재초기화 방지용, 이미지 정보에 값이 들어 있다면 릴리즈먼저 하자
+	if (_imageInfo != NULL) this->release();
+
+	//DC 가져오기
+	HDC hdc = GetDC(_hWnd);
+
+	//이미지 정보 구조체 새로 생성후 초기화 하기
+	_imageInfo = new IMAGE_INFO;
+	_imageInfo->loadType = LOAD_FILE;
+	_imageInfo->redID = 0;
+	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
+	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
+	_imageInfo->width = width;
+	_imageInfo->height = height;
+	_imageInfo->currentFrameX = 0;
+	_imageInfo->currentFrameY = 0;
+	_imageInfo->maxFrameX = frameX - 1;
+	_imageInfo->maxFrameY = frameY - 1;
+	_imageInfo->frameWidth = width / frameX;
+	_imageInfo->frameHeight = height / frameY;
+
+	//파일이름
+	int len = strlen(fileName);
+	_fileName = new char[len + 1];
+	strcpy_s(_fileName, len + 1, fileName);
+
+	//투명키 컬러 셋팅
+	_isTrans = isTrans;
+	_transColor = transColor;
+
+	//리소스 얻는데 실패하면 종료
+	if (_imageInfo->hBit == 0)
+	{
+		this->release();
+		return E_FAIL;
+	}
+
+	//DC 해제하기
+	ReleaseDC(_hWnd, hdc);
+
+	return S_OK;
+}
+
+HRESULT Image::init(const char * fileName, int x, int y, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor)
+{//재초기화 방지용, 이미지 정보에 값이 들어 있다면 릴리즈먼저 하자
+	if (_imageInfo != NULL) this->release();
+
+	//DC 가져오기
+	HDC hdc = GetDC(_hWnd);
+
+	//이미지 정보 구조체 새로 생성후 초기화 하기
+	_imageInfo = new IMAGE_INFO;
+	_imageInfo->loadType = LOAD_FILE;
+	_imageInfo->redID = 0;
+	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
+	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
+	_imageInfo->x = x;
+	_imageInfo->x = y;
+	_imageInfo->width = width;
+	_imageInfo->height = height;
+	_imageInfo->currentFrameX = 0;
+	_imageInfo->currentFrameY = 0;
+	_imageInfo->maxFrameX = frameX - 1;
+	_imageInfo->maxFrameY = frameY - 1;
+	_imageInfo->frameWidth = width / frameX;
+	_imageInfo->frameHeight = height / frameY;
+
+	//파일이름
+	int len = strlen(fileName);
+	_fileName = new char[len + 1];
+	strcpy_s(_fileName, len + 1, fileName);
+
+	//투명키 컬러 셋팅
+	_isTrans = isTrans;
+	_transColor = transColor;
+
+	//리소스 얻는데 실패하면 종료
+	if (_imageInfo->hBit == 0)
+	{
+		this->release();
+		return E_FAIL;
+	}
+
+	//DC 해제하기
+	ReleaseDC(_hWnd, hdc);
+
+	return S_OK;
+}
+
 HRESULT Image::initForAlphaBlend(void)
 {
 	//DC 가져오기
@@ -150,7 +288,7 @@ HRESULT Image::initForAlphaBlend(void)
 	return S_OK;
 }
 
-void Image::release(void)
+void Image::release()
 {
 	//이미지 정보가 남아 있다면 해제 시켜라
 	if (_imageInfo)
@@ -355,5 +493,76 @@ void Image::alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int
 		// 알파블렌드
 		AlphaBlend(hdc, destX, destY, sourWidth, sourHeight,
 			_imageInfo->hMemDC, sourX, sourY, sourWidth, sourHeight, _blendFunc);
+	}
+}
+
+
+//=============================================================
+//	## 프레임 렌더 ##
+//=============================================================
+void Image::frameRender(HDC hdc, int destX, int destY)
+{
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,													//복사할 장소의 DC
+			destX,													//복사될 좌표 시작점 X
+			destY,													//복사될 좌표 시작점 Y
+			_imageInfo->frameWidth,									//복사될 이미지 가로크기
+			_imageInfo->frameHeight,								//복사될 이미지 세로크기
+			_imageInfo->hMemDC,										//복사될 대상 DC
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,		//X축 복사 시작 지점
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,	//Y축 복사 시작 지점
+			_imageInfo->frameWidth,									//복사 영역 가로크기
+			_imageInfo->frameHeight,								//복사 영역 세로크기
+			_transColor);											//복사할때 제외할 색상 (마젠타)
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+		BitBlt(hdc, destX, destY, _imageInfo->frameWidth, _imageInfo->frameHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			SRCCOPY);
+	}
+}
+
+void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY)
+{
+	// 이미지 예외처리
+	_imageInfo->currentFrameX = currentFrameX;
+	_imageInfo->currentFrameY = currentFrameY;
+
+	if (currentFrameX > _imageInfo->maxFrameX)
+		_imageInfo->currentFrameX = _imageInfo->maxFrameX;
+	if (currentFrameY > _imageInfo->maxFrameY)
+		_imageInfo->currentFrameY = _imageInfo->maxFrameY;
+
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,													//복사할 장소의 DC
+			destX,													//복사될 좌표 시작점 X
+			destY,													//복사될 좌표 시작점 Y
+			_imageInfo->frameWidth,									//복사될 이미지 가로크기
+			_imageInfo->frameHeight,								//복사될 이미지 세로크기
+			_imageInfo->hMemDC,										//복사될 대상 DC
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,		//X축 복사 시작 지점
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,	//Y축 복사 시작 지점
+			_imageInfo->frameWidth,									//복사 영역 가로크기
+			_imageInfo->frameHeight,								//복사 영역 세로크기
+			_transColor);											//복사할때 제외할 색상 (마젠타)
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+		BitBlt(hdc, destX, destY, _imageInfo->frameWidth, _imageInfo->frameHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			SRCCOPY);
 	}
 }

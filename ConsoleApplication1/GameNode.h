@@ -8,13 +8,13 @@ private:
 	void setBackBuffer();	// 백버퍼 세팅하기
 	
 public:
-	virtual HRESULT init(void);	// void를 사용해도 됨. HRESULT: 정상적인 종료 여부 등의 여러 값을 가질 수 있음. 제일 많이 사용하는 것이 S_OK(정상 종료), E_FAIL(에러 발생)
-	virtual void release(void);
-	virtual void update(void);
+	virtual HRESULT init();	// void를 사용해도 됨. HRESULT: 정상적인 종료 여부 등의 여러 값을 가질 수 있음. 제일 많이 사용하는 것이 S_OK(정상 종료), E_FAIL(에러 발생)
+	virtual void release();
+	virtual void update();
 	virtual void render(HDC hdc);
 
 	// 백버퍼 이미지 얻기
-	Image* getBackBuffer(void) { return _backBuffer; }
+	Image* getBackBuffer() { return _backBuffer; }
 
 	// 메인 프로시져
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
