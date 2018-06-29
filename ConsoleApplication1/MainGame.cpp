@@ -22,6 +22,13 @@ HRESULT MainGame::init(void)
 	_alpha = 0;
 	_count = 0;
 
+	_playerImage = new Image;
+	//_playerImage->init("resource\\run.bmp", 320, 90, 8, 2);
+	_playerImage->init("resource\\run.bmp", 400.0f, 400.0f, 320, 90, 8, 2);
+	_imgCount = 0;
+	_imgIndex = 0;
+	_isLeft = true;
+
 	return S_OK;
 }
 
@@ -37,6 +44,7 @@ void MainGame::release(void)
 	SAFE_DELETE(_bgImage);
 	SAFE_DELETE(_bgI);
 	SAFE_DELETE(_face);
+	SAFE_DELETE(_playerImage);
 }
 
 //=============================================================
@@ -53,6 +61,47 @@ void MainGame::update(void)
 	{
 		_alpha += 10;
 		if (_alpha > 256) _alpha = 255;
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+	{
+		_isLeft = true;
+		_playerImage->setX(_playerImage->getX() - 2.0f);
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		_isLeft = false;
+		_playerImage->setX(_playerImage->getX() + 2.0f);
+	}
+
+	// 왼쪽프레임일 때 인덱스 변경하기( 애니메이션 )
+	if (_isLeft)	// 왼쪽 프레임
+	{
+		_imgCount = (_imgCount + 1) % 5;
+		_playerImage->setFrameY(0);
+		if(_imgCount == 0)
+		{
+			_imgIndex++;
+			if (_imgIndex > _playerImage->getMaxFrameX())
+			{
+				_imgIndex = 0;
+			}
+			_playerImage->setFrameX(_imgIndex);
+		}
+	}
+	else			// 오른쪽 프레임
+	{
+		_imgCount = (_imgCount + 1) % 5;
+		_playerImage->setFrameY(1);
+		if (_imgCount == 0)
+		{
+			_imgIndex--;
+			if (_imgIndex < 0)
+			{
+				_imgIndex = _playerImage->getMaxFrameX();
+			}
+			_playerImage->setFrameX(_imgIndex);
+		}
 	}
 }
 
@@ -79,6 +128,8 @@ void MainGame::render(HDC hdc)
 	char str[128];
 	wsprintf(str, "%d %d", _ptMouse.x, _ptMouse.y);
 	TextOut(memDC, 10, 10, str, strlen(str));
+
+	_playerImage->frameRender(memDC, _playerImage->getX(), _playerImage->getY());
 
 //======================================================================================
 	// 백버퍼의 내용을 HDC에 그린다 

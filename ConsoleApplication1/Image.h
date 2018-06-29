@@ -78,7 +78,7 @@ public:
 	HRESULT init(const char * fileName, float x, float y, int width, int height, bool isTrans = FALSE, COLORREF transColor = RGB(0, 0, 0));
 	// 프레임 이미지 파일로 초기화 (주 사용)
 	HRESULT init(const char * fileName, int width, int height, int frameX, int frameY, bool isTrans = TRUE, COLORREF transColor = RGB(255, 0, 255));
-	HRESULT init(const char * fileName, int x, int y, int width, int height, int frameX, int frameY, bool isTrans = TRUE, COLORREF transColor = RGB(255, 0, 255));
+	HRESULT init(const char * fileName, float x, float y, int width, int height, int frameX, int frameY, bool isTrans = TRUE, COLORREF transColor = RGB(255, 0, 255));
 
 	// 알파블렌드 초기화
 	HRESULT initForAlphaBlend();

@@ -215,7 +215,7 @@ HRESULT Image::init(const char * fileName, int width, int height, int frameX, in
 	return S_OK;
 }
 
-HRESULT Image::init(const char * fileName, int x, int y, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor)
+HRESULT Image::init(const char * fileName, float x, float y, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor)
 {//재초기화 방지용, 이미지 정보에 값이 들어 있다면 릴리즈먼저 하자
 	if (_imageInfo != NULL) this->release();
 
@@ -230,7 +230,7 @@ HRESULT Image::init(const char * fileName, int x, int y, int width, int height, 
 	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
 	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
 	_imageInfo->x = x;
-	_imageInfo->x = y;
+	_imageInfo->y = y;
 	_imageInfo->width = width;
 	_imageInfo->height = height;
 	_imageInfo->currentFrameX = 0;
@@ -534,7 +534,6 @@ void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int cu
 	// 이미지 예외처리
 	_imageInfo->currentFrameX = currentFrameX;
 	_imageInfo->currentFrameY = currentFrameY;
-
 	if (currentFrameX > _imageInfo->maxFrameX)
 		_imageInfo->currentFrameX = _imageInfo->maxFrameX;
 	if (currentFrameY > _imageInfo->maxFrameY)
