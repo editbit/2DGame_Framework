@@ -7,40 +7,49 @@
 //=============================================================
 HRESULT GameNode::init()
 {
-	SetTimer(_hWnd, 1, 10, NULL);			// 타이머 초기화
-	KEYMANAGER->init();						// 키 매니저 초기화
-	RND->init();
 
-	setBackBuffer();						// 백버퍼 초기화( 이미지 매니저 만든 후 삭제 )
 	return S_OK;
 }
 
-// 조만간 삭제
-void GameNode::setBackBuffer()
+HRESULT GameNode::init(bool managerInit)
 {
-	_backBuffer = new Image;
-	_backBuffer->init(WINSIZEX, WINSIZEY);
+	_hdc = GetDC(_hWnd);
+	_managerInit = managerInit;
+
+	if (managerInit)
+	{
+		SetTimer(_hWnd, 1, 10, NULL);
+		SetTimer(_hWnd, 1, 10, NULL);			// 타이머 초기화
+		KEYMANAGER->init();						// 키 매니저 초기화
+		RND->init();
+		IMAGEMANAGER->init();					// 이미지 매니저 초기화
+	}
+
+	return S_OK;
 }
+
 
 //=============================================================
 //	## 해제 ## release(void)
 //=============================================================
 void GameNode::release()
 {
-	KillTimer(_hWnd, 1);
-	// 키 매니저 싱글톤 해제
-	KEYMANAGER->release();
-	KEYMANAGER->releaseSingleton();
-	// 랜덤펑션 싱글톤 해제 ( 싱글톤 연습 )
-	RND->release();
-	RND->releaseSingleton();
+	if (_managerInit)
+	{
+		KillTimer(_hWnd, 1);
+		// 키 매니저 싱글톤 해제
+		KEYMANAGER->release();
+		KEYMANAGER->releaseSingleton();
+		// 랜덤펑션 싱글톤 해제 ( 싱글톤 연습 )
+		RND->release();
+		RND->releaseSingleton();
+		// 이미지 매니저 싱글톤 해제
+		IMAGEMANAGER->release();
+		IMAGEMANAGER->releaseSingleton();
+	}
 
-	// 백버퍼 이미지 해제( 조만간 지움 )
-	// delete _backBuffer;
-	SAFE_DELETE(_backBuffer);
-/*
-	MYSOCKET->release();
-	MYSOCKET->releaseSingleton();*/
+	//DC 해제
+	ReleaseDC(_hWnd, _hdc);
 }
 
 //=============================================================
@@ -56,7 +65,7 @@ void GameNode::update()
 //=============================================================
 //	## 렌더 ## render(HDC hdc)
 //=============================================================
-void GameNode::render(HDC hdc)
+void GameNode::render()
 {
 
 }
@@ -77,7 +86,7 @@ LRESULT GameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		this->render(hdc);
+		this->render();
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_MOUSEMOVE:

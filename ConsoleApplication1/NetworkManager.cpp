@@ -99,7 +99,7 @@ int NetworkManager::checkInput()
 	if ((fdNum = select(0, &cpyReads, 0, 0, &timeout)) == SOCKET_ERROR)
 		return 0;
 
-	for (int i = 0; i < reads.fd_count; ++i)
+	for (unsigned int i = 0; i < reads.fd_count; ++i)
 	{
 		if (FD_ISSET(reads.fd_array[i], &cpyReads))
 		{

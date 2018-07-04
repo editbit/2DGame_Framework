@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="GameFramework2D">
       <UniqueIdentifier>{7de822a7-a600-4ee6-9121-9ba5eba5a081}</UniqueIdentifier>
     </Filter>
@@ -30,6 +26,10 @@
     </Filter>
     <Filter Include="GameFramework2D\Image">
       <UniqueIdentifier>{e1681ae9-24cf-40c9-bbac-1b299f7907e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +60,9 @@
     <ClInclude Include="GameNode.h">
       <Filter>GameFramework2D\MainGame\WinMain</Filter>
     </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="GameNode.cpp">
       <Filter>GameFramework2D\MainGame\WinMain</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>GameFramework2D\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
