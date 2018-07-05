@@ -110,6 +110,13 @@ public:
 	void frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
 
 	//=============================================================
+	//	## 루프렌더 ##
+	//=============================================================
+	void loopRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);
+	void loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY, BYTE alpha);
+
+
+	//=============================================================
 	//	## inline ## (인라인 함수들 - 겟터, 셋터) 
 	//=============================================================
 	
