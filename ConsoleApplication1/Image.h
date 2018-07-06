@@ -62,6 +62,8 @@ private:
 	LPIMAGE_INFO	_blendImage;	// 알파블렌드 이미지
 	BLENDFUNCTION	_blendFunc;		// 알파블렌드 기능
 
+	LPIMAGE_INFO _scaleImage;
+
 public:
 	Image();
 	~Image();
@@ -82,6 +84,8 @@ public:
 
 	// 알파블렌드 초기화
 	HRESULT initForAlphaBlend();
+	// 스케일 이미지 초기화
+	HRESULT initForScale();
 
 
 	//=============================================================
@@ -114,6 +118,13 @@ public:
 	//=============================================================
 	void loopRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);
 	void loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY, BYTE alpha);
+
+
+	//=============================================================
+	//	## 스케일렌더 ##
+	//=============================================================
+	void scaleRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, int sourX, int sourY, int sourWidth, int sourHeight);
+	//void loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY, BYTE alpha);
 
 
 	//=============================================================

@@ -90,6 +90,7 @@ void MainGame::render()
 	//_bgImage->loopRender(getMemDC(), &rc, _loopX, _loopY);
 	_bgImage->loopAlphaRender(getMemDC(), &rc, _loopX, _loopY, _alpha);
 	
+	_bgImage->scaleRender(getMemDC(), 0, 0, WINSIZEX , WINSIZEY/4 , 0, 0, WINSIZEX, WINSIZEY);
 	
 
 //======================================================================================

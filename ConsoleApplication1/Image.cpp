@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Image.h"
 Image::Image()
-	: _imageInfo(NULL), _fileName(NULL), _isTrans(FALSE), _blendImage(NULL), _transColor(RGB(0, 0, 0))
+	: _imageInfo(NULL), _fileName(NULL), _isTrans(FALSE), _blendImage(NULL), _transColor(RGB(0, 0, 0)), _scaleImage(NULL)
 {
 }
 Image::~Image()
@@ -282,6 +282,27 @@ HRESULT Image::initForAlphaBlend(void)
 	_blendImage->width = WINSIZEX;
 	_blendImage->height = WINSIZEY;
 	
+	//DC 해제하기
+	ReleaseDC(_hWnd, hdc);
+
+	return S_OK;
+}
+
+HRESULT Image::initForScale()
+{
+	//DC 가져오기
+	HDC hdc = GetDC(_hWnd);
+
+	//이미지 정보 구조체 새로 생성후 초기화 하기
+	_scaleImage = new IMAGE_INFO;
+	_scaleImage->loadType = LOAD_FILE;
+	_scaleImage->redID = 0;
+	_scaleImage->hMemDC = CreateCompatibleDC(hdc);
+	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, _imageInfo->width, _imageInfo->height);
+	_scaleImage->hOBit = (HBITMAP)SelectObject(_scaleImage->hMemDC, _scaleImage->hBit);
+	_scaleImage->width = WINSIZEX;
+	_scaleImage->height = WINSIZEY;
+
 	//DC 해제하기
 	ReleaseDC(_hWnd, hdc);
 
@@ -700,5 +721,61 @@ void Image::loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int off
 			//그려주자(알파렌더-이미지잘라서붙이기)
 			alphaRender(hdc, rcDest.left, rcDest.top, rcSour.left, rcSour.top, sourWidth, sourHeight, alpha);
 		}
+	}
+}
+
+void Image::scaleRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, int sourX, int sourY, int sourWidth, int sourHeight)
+{
+	/*
+	
+ BLACKONWHITE = STRETCH_ANDSCANS 
+
+AND 논리 연산을 사용한다. 흰색을 생략하고 검정색을 보존한다. 검정색이 우선 보존된다.
+
+ WHITEONBLACK = STRETCH_ORSCANS
+
+OR 논리 연산을 사용한다. 검정색을 생략하고 흰색을 보존한다. 흰색이 우선 보존된다.
+
+ COLORONCOLOR = STRETCH_DELETESCANS
+
+생략되는 픽셀을 별도의 논리 연산없이 삭제한다.
+
+ HALFTONE = STRETCH_HALFTONE
+
+복사대상과 복사원의 사각 블록끼리 대입하여 평균 색상을 구한다. 95/98에서 이 모드는 지원되지 않는다.
+	*/
+	if (!_scaleImage) this->initForScale();
+
+	if (_isTrans) //배경색 없앤 후 스케일 할 때
+	{
+		//1. 출력해야 될 화면DC에 그려져 있는 내용을 스케일이미지에 그린다
+		BitBlt(_scaleImage->hMemDC, 0, 0, sourWidth, sourHeight,
+			hdc, destX, destY, SRCCOPY);
+
+		//2. 메모리DC 이미지의 배경을 없앤후 다시 스케일이미지에 그린다
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			_scaleImage->hMemDC,					//복사할 장소의 DC
+			0,						//복사될 좌표 시작점 X
+			0,						//복사될 좌표 시작점 Y
+			sourWidth,		//복사될 이미지 가로크기
+			sourHeight,		//복사될 이미지 세로크기
+			_imageInfo->hMemDC,		//복사될 대상 DC
+			sourX, sourY,					//복사 시작지점
+			sourWidth,		//복사 영역 가로크기
+			sourHeight,		//복사 영역 세로크기
+			_transColor);			//복사할때 제외할 색상 (마젠타)
+
+									//3. 스케일이미지를 화면에 그린다
+		
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(hdc, destX, destY, destWidth, destHeight,
+			_scaleImage->hMemDC, 0, 0, sourWidth, sourHeight, SRCCOPY);
+	}
+	else //원본 이미지 그대로 스케일 할 때
+	{
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(hdc, destX, destY, destWidth, destHeight,
+			_imageInfo->hMemDC, sourX, sourY, sourWidth, sourHeight, SRCCOPY);
 	}
 }
