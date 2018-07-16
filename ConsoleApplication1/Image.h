@@ -11,7 +11,7 @@ public:
 		LOAD_RESOURCE = 0,	// 리소스 로딩
 		LOAD_FILE,			// 파일로 로딩
 		LOAD_EMPTY,			// 빈 비트맵 로딩
-		LOAD_END			
+		LOAD_END
 	};
 
 	typedef struct TagImage
@@ -58,7 +58,7 @@ private:
 	CHAR*			_fileName;		// 이미지 이름
 	BOOL			_isTrans;		// 배경색 유무( true이면 배경 지우기 )
 	COLORREF		_transColor;	// 지울 배경색 RGB 코드 ( 마젠타 = RGB(255, 0, 255) )
-	
+
 	LPIMAGE_INFO	_blendImage;	// 알파블렌드 이미지
 	BLENDFUNCTION	_blendFunc;		// 알파블렌드 기능
 
@@ -92,12 +92,12 @@ public:
 	//	## 해제 ##
 	//=============================================================
 	void release();
-	
+
 
 	//=============================================================
 	//	## 일반 렌더 ##
 	//=============================================================
-	void render(HDC hdc, int destX=0, int destY=0);
+	void render(HDC hdc, int destX = 0, int destY = 0);
 	void render(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
 
 	//=============================================================
@@ -106,12 +106,14 @@ public:
 	void alphaRender(HDC hdc, BYTE alpha);
 	void alphaRender(HDC hdc, int destX, int destY, BYTE alpha);
 	void alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight, BYTE alpha);
+	void alphaFrameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha);
 
 	//=============================================================
 	//	## 프레임 렌더 ##
 	//=============================================================
 	void frameRender(HDC hdc, int destX = 0, int destY = 0);
 	void frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
+	void frameRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
 
 	//=============================================================
 	//	## 루프렌더 ##
@@ -119,18 +121,24 @@ public:
 	void loopRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);
 	void loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY, BYTE alpha);
 
-
 	//=============================================================
 	//	## 스케일렌더 ##
 	//=============================================================
 	void scaleRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, int sourX, int sourY, int sourWidth, int sourHeight);
-	//void loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY, BYTE alpha);
+	void scaleAlphaRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, BYTE alpha);
+	void frameScaleRender(HDC hdc, int destX, int destY, int destWidth, int destHeight);
+	void frameScaleAlphaRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, BYTE alpha);
+
+	void stretchRender(HDC hdc, int destX, int destY, float scale);
+	void stretchFrameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, float scale);
+
+
 
 
 	//=============================================================
 	//	## inline ## (인라인 함수들 - 겟터, 셋터) 
 	//=============================================================
-	
+
 	// DC 얻기
 	inline HDC getMemDC() { return _imageInfo->hMemDC; }
 
@@ -155,10 +163,10 @@ public:
 	// 바운딩 박스( 충돌용 렉트 )
 	inline RECT boundingBox()
 	{
-		return {(int)_imageInfo->x,							// left
+		return { (int)_imageInfo->x,							// left
 			(int)_imageInfo->y,								// top
 			(int)_imageInfo->x + _imageInfo->width,			// right
-			(int)_imageInfo->y + _imageInfo->height};		// bottom
+			(int)_imageInfo->y + _imageInfo->height };		// bottom
 	}
 	inline RECT boundingBoxWidthFrame()
 	{
@@ -179,7 +187,7 @@ public:
 	}
 	// 프레임 y
 	inline int getFrameY() { return _imageInfo->currentFrameY; }
-	inline void setFrameY(int frameY) { 
+	inline void setFrameY(int frameY) {
 		_imageInfo->currentFrameY = frameY;
 		if (frameY > _imageInfo->maxFrameY)
 		{

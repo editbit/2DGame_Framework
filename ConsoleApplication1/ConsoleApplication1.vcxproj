@@ -155,6 +155,7 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="RandomFunction.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="MainGame.cpp" />

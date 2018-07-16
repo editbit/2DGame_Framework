@@ -8,10 +8,9 @@ HRESULT MainGame::init(void)
 {
 	GameNode::init(TRUE);
 	// 이곳에서 초기화를 한다.
-	_bgImage = IMAGEMANAGER->addImage("배경", "resource\\stage1.bmp", WINSIZEX, WINSIZEY);
+	//_bgImage = IMAGEMANAGER->addImage("배경", "resource\\stage1.bmp", WINSIZEX, WINSIZEY);
 
-	_loopX = _loopY = 0;
-
+	
 
 	return S_OK;
 }
@@ -24,8 +23,6 @@ void MainGame::release(void)
 	GameNode::release();
 	// 이미지 클래스 나갈 때까진 사용 X
 	// init함수에서 동적할당한 메모리만 delete로 해제해준다.
-
-
 }
 
 //=============================================================
@@ -34,16 +31,8 @@ void MainGame::release(void)
 void MainGame::update(void)
 {
 	GameNode::update();
-	// 이곳에서 계산식, 키보드, 마우스 등등 업데이트를 한다
-	// 간단한게 이곳에서 코딩한다고 생각하면 된다.
 
 
-	//백그라운드 루프
-	//_loopX++;
-	_loopX += 3;
-	_loopY++;
-
-	_alpha = (_alpha + 1) % 256;
 }
 
 //=============================================================
@@ -86,12 +75,12 @@ void MainGame::render()
 	// 방법 3
 	//IMAGEMANAGER->findImage("배경")->render(getMemDC());
 
-	RECT rc = RectMake(0, 0, WINSIZEX, WINSIZEY);
+	//RECT rc = RectMake(0, 0, WINSIZEX, WINSIZEY);
 	//_bgImage->loopRender(getMemDC(), &rc, _loopX, _loopY);
-	_bgImage->loopAlphaRender(getMemDC(), &rc, _loopX, _loopY, _alpha);
+	//_bgImage->loopAlphaRender(getMemDC(), &rc, _loopX, _loopY, _alpha);
 	
-	_bgImage->scaleRender(getMemDC(), 0, 0, WINSIZEX , WINSIZEY/4 , 0, 0, WINSIZEX, WINSIZEY);
 	
+	SCENEMANAGER->getCurrentScene()->render();
 
 //======================================================================================
 	// 백버퍼의 내용을 HDC에 그린다 

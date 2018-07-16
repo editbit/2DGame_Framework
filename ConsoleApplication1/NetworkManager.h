@@ -22,7 +22,6 @@ class NetworkManager :
 	fd_set reads, cpyReads;
 	int fdNum;
 
-
 public:
 	HRESULT init();
 	void release();

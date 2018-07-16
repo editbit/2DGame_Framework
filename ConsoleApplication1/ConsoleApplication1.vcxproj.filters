@@ -63,6 +63,9 @@
     <ClInclude Include="ImageManager.h">
       <Filter>GameFramework2D\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -87,6 +90,9 @@
       <Filter>GameFramework2D\MainGame\WinMain</Filter>
     </ClCompile>
     <ClCompile Include="ImageManager.cpp">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
       <Filter>GameFramework2D\Manager</Filter>
     </ClCompile>
   </ItemGroup>

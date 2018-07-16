@@ -122,6 +122,16 @@ HRESULT Image::init(const char * fileName, int width, int height, bool isTrans, 
 		return E_FAIL;
 	}
 
+	//스트레치 이미지 초기화
+	_scaleImage = new IMAGE_INFO;
+	_scaleImage->loadType = LOAD_EMPTY;
+	_scaleImage->redID = 0;
+	_scaleImage->hMemDC = CreateCompatibleDC(hdc);
+	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_scaleImage->hOBit = (HBITMAP)SelectObject(_scaleImage->hMemDC, _scaleImage->hBit);
+	_scaleImage->width = WINSIZEX;
+	_scaleImage->height = WINSIZEY;
+
 	//DC 해제하기
 	ReleaseDC(_hWnd, hdc);
 
@@ -162,6 +172,15 @@ HRESULT Image::init(const char * fileName, float x, float y, int width, int heig
 		this->release();
 		return E_FAIL;
 	}
+	//스트레치 이미지 초기화
+	_scaleImage = new IMAGE_INFO;
+	_scaleImage->loadType = LOAD_EMPTY;
+	_scaleImage->redID = 0;
+	_scaleImage->hMemDC = CreateCompatibleDC(hdc);
+	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_scaleImage->hOBit = (HBITMAP)SelectObject(_scaleImage->hMemDC, _scaleImage->hBit);
+	_scaleImage->width = WINSIZEX;
+	_scaleImage->height = WINSIZEY;
 
 	//DC 해제하기
 	ReleaseDC(_hWnd, hdc);
@@ -208,6 +227,16 @@ HRESULT Image::init(const char * fileName, int width, int height, int frameX, in
 		this->release();
 		return E_FAIL;
 	}
+
+	//스트레치 이미지 초기화
+	_scaleImage = new IMAGE_INFO;
+	_scaleImage->loadType = LOAD_EMPTY;
+	_scaleImage->redID = 0;
+	_scaleImage->hMemDC = CreateCompatibleDC(hdc);
+	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_scaleImage->hOBit = (HBITMAP)SelectObject(_scaleImage->hMemDC, _scaleImage->hBit);
+	_scaleImage->width = WINSIZEX;
+	_scaleImage->height = WINSIZEY;
 
 	//DC 해제하기
 	ReleaseDC(_hWnd, hdc);
@@ -256,6 +285,17 @@ HRESULT Image::init(const char * fileName, float x, float y, int width, int heig
 		return E_FAIL;
 	}
 
+
+	//스트레치 이미지 초기화
+	_scaleImage = new IMAGE_INFO;
+	_scaleImage->loadType = LOAD_EMPTY;
+	_scaleImage->redID = 0;
+	_scaleImage->hMemDC = CreateCompatibleDC(hdc);
+	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_scaleImage->hOBit = (HBITMAP)SelectObject(_scaleImage->hMemDC, _scaleImage->hBit);
+	_scaleImage->width = WINSIZEX;
+	_scaleImage->height = WINSIZEY;
+
 	//DC 해제하기
 	ReleaseDC(_hWnd, hdc);
 
@@ -277,11 +317,12 @@ HRESULT Image::initForAlphaBlend(void)
 	_blendImage->loadType = LOAD_FILE;
 	_blendImage->redID = 0;
 	_blendImage->hMemDC = CreateCompatibleDC(hdc);
-	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, _imageInfo->width, _imageInfo->height);
+	//_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, _imageInfo->width, _imageInfo->height);
+	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
 	_blendImage->hOBit = (HBITMAP)SelectObject(_blendImage->hMemDC, _blendImage->hBit);
 	_blendImage->width = WINSIZEX;
 	_blendImage->height = WINSIZEY;
-	
+
 	//DC 해제하기
 	ReleaseDC(_hWnd, hdc);
 
@@ -298,7 +339,8 @@ HRESULT Image::initForScale()
 	_scaleImage->loadType = LOAD_FILE;
 	_scaleImage->redID = 0;
 	_scaleImage->hMemDC = CreateCompatibleDC(hdc);
-	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, _imageInfo->width, _imageInfo->height);
+	//_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, _imageInfo->width, _imageInfo->height);
+	_scaleImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
 	_scaleImage->hOBit = (HBITMAP)SelectObject(_scaleImage->hMemDC, _scaleImage->hBit);
 	_scaleImage->width = WINSIZEX;
 	_scaleImage->height = WINSIZEY;
@@ -420,8 +462,8 @@ void Image::alphaRender(HDC hdc, BYTE alpha)
 			_imageInfo->height,		//복사 영역 세로크기
 			_transColor);			//복사할때 제외할 색상 (마젠타)
 
-		//3. 블렌드이미지를 화면에 그린다
-		// 알파블렌드
+									//3. 블렌드이미지를 화면에 그린다
+									// 알파블렌드
 		AlphaBlend(hdc, 0, 0, _imageInfo->width, _imageInfo->height,
 			_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, _blendFunc);
 	}
@@ -462,8 +504,8 @@ void Image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
 			_imageInfo->height,		//복사 영역 세로크기
 			_transColor);			//복사할때 제외할 색상 (마젠타)
 
-		//3. 블렌드이미지를 화면에 그린다
-		// 알파블렌드
+									//3. 블렌드이미지를 화면에 그린다
+									// 알파블렌드
 		AlphaBlend(hdc, destX, destY, _imageInfo->width, _imageInfo->height,
 			_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, _blendFunc);
 	}
@@ -517,6 +559,90 @@ void Image::alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int
 	}
 }
 
+void Image::alphaFrameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha)
+{
+
+/*
+// 이미지 예외처리
+if (_isTrans) //배경색 없앨꺼냐?
+{
+//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+GdiTransparentBlt(
+hdc,													//복사할 장소의 DC
+destX,													//복사될 좌표 시작점 X
+destY,													//복사될 좌표 시작점 Y
+_imageInfo->frameWidth,									//복사될 이미지 가로크기
+_imageInfo->frameHeight,								//복사될 이미지 세로크기
+_imageInfo->hMemDC,										//복사될 대상 DC
+_imageInfo->currentFrameX * _imageInfo->frameWidth,		//X축 복사 시작 지점
+_imageInfo->currentFrameY * _imageInfo->frameHeight,	//Y축 복사 시작 지점
+_imageInfo->frameWidth,									//복사 영역 가로크기
+_imageInfo->frameHeight,								//복사 영역 세로크기
+_transColor);											//복사할때 제외할 색상 (마젠타)
+}
+else //원본 이미지 그래도 출력할꺼냐?
+{
+//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+BitBlt(hdc, destX, destY, _imageInfo->frameWidth, _imageInfo->frameHeight,
+_imageInfo->hMemDC,
+_imageInfo->currentFrameX * _imageInfo->frameWidth,
+_imageInfo->currentFrameY * _imageInfo->frameHeight,
+SRCCOPY);
+}
+*/
+	// 알파블렌드를 처음 사용한다면
+	// 알파블렌드를 사용할 수 있도록 초기화
+	if (!_blendImage) this->initForAlphaBlend();
+
+	_imageInfo->currentFrameX = currentFrameX;
+	_imageInfo->currentFrameY = currentFrameY;
+	if (currentFrameX > _imageInfo->maxFrameX)
+		_imageInfo->currentFrameX = _imageInfo->maxFrameX;
+	if (currentFrameY > _imageInfo->maxFrameY)
+		_imageInfo->currentFrameY = _imageInfo->maxFrameY;
+
+
+
+	// 알파값 초기화
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	if (_isTrans) //배경색 없앤 후 알파블렌딩 할 때
+	{
+		//1. 출력해야 될 화면DC에 그려져 있는 내용을 블렌드이미지에 그린다
+		BitBlt(_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height,
+			hdc, destX, destY, SRCCOPY);
+
+		//2. 메모리DC 이미지의 배경을 없앤후 다시 블렌드이미지에 그린다
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			_blendImage->hMemDC,					//복사할 장소의 DC
+			0,						//복사될 좌표 시작점 X
+			0,						//복사될 좌표 시작점 Y
+			_imageInfo->frameWidth,									//복사될 이미지 가로크기
+			_imageInfo->frameHeight,								//복사될 이미지 세로크기
+			_imageInfo->hMemDC,										//복사될 대상 DC
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,		//X축 복사 시작 지점
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,	//Y축 복사 시작 지점
+			_imageInfo->frameWidth,									//복사 영역 가로크기
+			_imageInfo->frameHeight,								//복사 영역 세로크기
+			_transColor);			//복사할때 제외할 색상 (마젠타)
+
+									//3. 블렌드이미지를 화면에 그린다
+									// 알파블렌드
+		AlphaBlend(hdc, destX, destY, _imageInfo->frameWidth, _imageInfo->frameHeight,
+			_blendImage->hMemDC, 0, 0, _imageInfo->frameWidth, _imageInfo->frameHeight, _blendFunc);
+	}
+	else //원본 이미지 그대로 알파블렌딩 할 때
+	{
+		// 알파블렌드
+		AlphaBlend(hdc, destX, destY, _imageInfo->frameWidth, _imageInfo->frameHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight, 
+			_imageInfo->frameWidth, _imageInfo->frameHeight, _blendFunc);
+	}
+}
+
 
 //=============================================================
 //	## 프레임 렌더 ##
@@ -538,6 +664,8 @@ void Image::frameRender(HDC hdc, int destX, int destY)
 			_imageInfo->frameWidth,									//복사 영역 가로크기
 			_imageInfo->frameHeight,								//복사 영역 세로크기
 			_transColor);											//복사할때 제외할 색상 (마젠타)
+
+		
 	}
 	else //원본 이미지 그래도 출력할꺼냐?
 	{
@@ -586,6 +714,40 @@ void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int cu
 			SRCCOPY);
 	}
 }
+
+void Image::frameRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight)
+{
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,													//복사할 장소의 DC
+			destX,													//복사될 좌표 시작점 X
+			destY,													//복사될 좌표 시작점 Y
+			sourWidth,									//복사될 이미지 가로크기
+			sourHeight,								//복사될 이미지 세로크기
+			_imageInfo->hMemDC,										//복사될 대상 DC
+			_imageInfo->currentFrameX * _imageInfo->frameWidth + sourX,		//X축 복사 시작 지점
+			_imageInfo->currentFrameY * _imageInfo->frameHeight + sourY,	//Y축 복사 시작 지점
+			sourWidth,									//복사 영역 가로크기
+			sourHeight,								//복사 영역 세로크기
+			_transColor);											//복사할때 제외할 색상 (마젠타)
+
+
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+		BitBlt(hdc, destX, destY, 
+			sourWidth,
+			sourHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth + sourX,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight + sourY,
+			SRCCOPY);
+	}
+}
+
 
 
 //=============================================================
@@ -727,22 +889,22 @@ void Image::loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int off
 void Image::scaleRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, int sourX, int sourY, int sourWidth, int sourHeight)
 {
 	/*
-	
- BLACKONWHITE = STRETCH_ANDSCANS 
 
-AND 논리 연산을 사용한다. 흰색을 생략하고 검정색을 보존한다. 검정색이 우선 보존된다.
+	BLACKONWHITE = STRETCH_ANDSCANS
 
- WHITEONBLACK = STRETCH_ORSCANS
+	AND 논리 연산을 사용한다. 흰색을 생략하고 검정색을 보존한다. 검정색이 우선 보존된다.
 
-OR 논리 연산을 사용한다. 검정색을 생략하고 흰색을 보존한다. 흰색이 우선 보존된다.
+	WHITEONBLACK = STRETCH_ORSCANS
 
- COLORONCOLOR = STRETCH_DELETESCANS
+	OR 논리 연산을 사용한다. 검정색을 생략하고 흰색을 보존한다. 흰색이 우선 보존된다.
 
-생략되는 픽셀을 별도의 논리 연산없이 삭제한다.
+	COLORONCOLOR = STRETCH_DELETESCANS
 
- HALFTONE = STRETCH_HALFTONE
+	생략되는 픽셀을 별도의 논리 연산없이 삭제한다.
 
-복사대상과 복사원의 사각 블록끼리 대입하여 평균 색상을 구한다. 95/98에서 이 모드는 지원되지 않는다.
+	HALFTONE = STRETCH_HALFTONE
+
+	복사대상과 복사원의 사각 블록끼리 대입하여 평균 색상을 구한다. 95/98에서 이 모드는 지원되지 않는다.
 	*/
 	if (!_scaleImage) this->initForScale();
 
@@ -767,7 +929,7 @@ OR 논리 연산을 사용한다. 검정색을 생략하고 흰색을 보존한다. 흰색이 우선 보존된다
 			_transColor);			//복사할때 제외할 색상 (마젠타)
 
 									//3. 스케일이미지를 화면에 그린다
-		
+
 		SetStretchBltMode(hdc, COLORONCOLOR);
 		StretchBlt(hdc, destX, destY, destWidth, destHeight,
 			_scaleImage->hMemDC, 0, 0, sourWidth, sourHeight, SRCCOPY);
@@ -777,5 +939,244 @@ OR 논리 연산을 사용한다. 검정색을 생략하고 흰색을 보존한다. 흰색이 우선 보존된다
 		SetStretchBltMode(hdc, COLORONCOLOR);
 		StretchBlt(hdc, destX, destY, destWidth, destHeight,
 			_imageInfo->hMemDC, sourX, sourY, sourWidth, sourHeight, SRCCOPY);
+	}
+}
+
+
+
+void Image::scaleAlphaRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, BYTE alpha)
+{
+	if (!_scaleImage) this->initForScale();
+	if (!_blendImage) this->initForAlphaBlend();
+
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	if (_isTrans) //배경색 없앤 후 스케일 할 때
+	{
+		//1. 출력해야 될 화면DC에 그려져 있는 내용을 스케일이미지에 그린다
+		BitBlt(_blendImage->hMemDC, 0, 0, destWidth, destHeight,
+			hdc, destX, destY, SRCCOPY);
+
+
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(_scaleImage->hMemDC, 0, 0, destWidth, destHeight,
+			_imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, SRCCOPY);
+
+
+		//2. 메모리DC 이미지의 배경을 없앤후 다시 스케일이미지에 그린다
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			_blendImage->hMemDC,					//복사할 장소의 DC
+			0,						//복사될 좌표 시작점 X
+			0,						//복사될 좌표 시작점 Y
+			destWidth,		//복사될 이미지 가로크기
+			destHeight,		//복사될 이미지 세로크기
+			_scaleImage->hMemDC,		//복사될 대상 DC
+			0, 0,					//복사 시작지점
+			destWidth,		//복사 영역 가로크기
+			destHeight,		//복사 영역 세로크기
+			_transColor);			//복사할때 제외할 색상 (마젠타)
+
+									//3. 스케일이미지를 화면에 그린다
+		AlphaBlend(hdc, destX, destY, destWidth, destHeight,
+			_blendImage->hMemDC, 0, 0, destWidth, destHeight, _blendFunc);
+
+	}
+	else //원본 이미지 그대로 스케일 할 때
+	{
+
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(_blendImage->hMemDC, 0, 0, destWidth, destHeight,
+			_imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, SRCCOPY);
+
+		AlphaBlend(hdc, destX, destY, destWidth, destHeight,
+			_blendImage->hMemDC, 0, 0, destWidth, destHeight, _blendFunc);
+
+
+		/*AlphaBlend(_blendImage->hMemDC, 0, 0, sourWidth, sourHeight,
+		_imageInfo->hMemDC, sourX, sourY, sourWidth, sourHeight, _blendFunc);
+
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(hdc, destX, destY, destWidth, destHeight,
+		_blendImage->hMemDC, 0, 0, sourWidth, sourHeight, SRCCOPY);*/
+	}
+}
+
+void Image::frameScaleRender(HDC hdc, int destX, int destY, int destWidth, int destHeight)
+{
+	if (!_scaleImage) this->initForScale();
+
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(_scaleImage->hMemDC, 0, 0, destWidth, destHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, SRCCOPY);
+
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,													//복사할 장소의 DC
+			destX,													//복사될 좌표 시작점 X
+			destY,													//복사될 좌표 시작점 Y
+			destWidth,									//복사될 이미지 가로크기
+			destHeight,								//복사될 이미지 세로크기
+			_scaleImage->hMemDC,										//복사될 대상 DC
+			0,		//X축 복사 시작 지점
+			0,	//Y축 복사 시작 지점
+			destWidth,									//복사 영역 가로크기
+			destHeight,								//복사 영역 세로크기
+			_transColor);											//복사할때 제외할 색상 (마젠타)
+
+
+
+
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(hdc, destX, destY, destWidth, destHeight,
+			_imageInfo->hMemDC,
+			0, 0,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			SRCCOPY);
+	}
+}
+
+void Image::frameScaleAlphaRender(HDC hdc, int destX, int destY, int destWidth, int destHeight, BYTE alpha)
+{
+	if (!_scaleImage) this->initForScale();
+	if (!_blendImage) this->initForAlphaBlend();
+
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	if (_isTrans) //배경색 없앤 후 스케일 할 때
+	{
+		//1. 출력해야 될 화면DC에 그려져 있는 내용을 스케일이미지에 그린다
+		BitBlt(_blendImage->hMemDC, 0, 0, destWidth, destHeight,
+			hdc, destX, destY, SRCCOPY);
+
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(_scaleImage->hMemDC, 0, 0, destWidth, destHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, SRCCOPY);
+
+		//2. 메모리DC 이미지의 배경을 없앤후 다시 스케일이미지에 그린다
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			_blendImage->hMemDC,					//복사할 장소의 DC
+			0,						//복사될 좌표 시작점 X
+			0,						//복사될 좌표 시작점 Y
+			destWidth,		//복사될 이미지 가로크기
+			destHeight,		//복사될 이미지 세로크기
+			_scaleImage->hMemDC,		//복사될 대상 DC
+			0, 0,					//복사 시작지점
+			destWidth,		//복사 영역 가로크기
+			destHeight,		//복사 영역 세로크기
+			_transColor);			//복사할때 제외할 색상 (마젠타)
+
+									//3. 스케일이미지를 화면에 그린다
+
+		AlphaBlend(hdc, destX, destY, destWidth, destHeight,
+			_blendImage->hMemDC, 0, 0, destWidth, destHeight, _blendFunc);
+	}
+	else //원본 이미지 그대로 스케일 할 때
+	{
+
+		//BitBlt : DC간의 영역끼리 서로 고속복사를 해주는 함수
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchBlt(_blendImage->hMemDC, 0, 0, destWidth, destHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, SRCCOPY);
+
+		AlphaBlend(hdc, destX, destY, destWidth, destHeight,
+			_blendImage->hMemDC, 0, 0, destWidth, destHeight, _blendFunc);
+	}
+}
+
+
+void Image::stretchRender(HDC hdc, int destX, int destY, float scale)
+{
+	_scaleImage->width = _imageInfo->width * scale;
+	_scaleImage->height = _imageInfo->height * scale;
+
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+		//원본이미지를 Scale값 만큼 확대/축소시켜서 그려준다
+		SetStretchBltMode(getMemDC(), COLORONCOLOR);
+		StretchBlt(_scaleImage->hMemDC, 0, 0, _scaleImage->width, _scaleImage->height,
+			_imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, SRCCOPY);
+
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,					//복사할 장소의 DC
+			destX,					//복사될 좌표 시작점 X
+			destY,					//복사될 좌표 시작점 Y
+			_scaleImage->width,	//복사될 이미지 가로크기
+			_scaleImage->height,	//복사될 이미지 세로크기
+			_scaleImage->hMemDC,	//복사될 대상 DC
+			0, 0,					//복사 시작지점
+			_scaleImage->width,	//복사 영역 가로크기
+			_scaleImage->height,	//복사 영역 세로크기
+			_transColor);			//복사할때 제외할 색상 (마젠타)
+
+		
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//원본 이미지의 크기를 확대/축소 해서 렌더 시킨다
+		StretchBlt(hdc, destX, destY, _scaleImage->width, _scaleImage->height,
+			_imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, SRCCOPY);
+	}
+}
+
+void Image::stretchFrameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, float scale)
+{
+	_scaleImage->width = _imageInfo->width * scale;
+	_scaleImage->height = _imageInfo->height * scale;
+	_scaleImage->frameWidth = _scaleImage->width / (_imageInfo->maxFrameX + 1);
+	_scaleImage->frameHeight = _scaleImage->height / (_imageInfo->maxFrameY + 1);
+
+	if (_isTrans) //배경색 없앨꺼냐?
+	{
+		//원본이미지를 Scale값 만큼 확대/축소시켜서 그려준다
+		SetStretchBltMode(getMemDC(), COLORONCOLOR);
+		StretchBlt(_scaleImage->hMemDC, 0, 0, _scaleImage->frameWidth, _scaleImage->frameHeight,
+			_imageInfo->hMemDC,
+			currentFrameX * _imageInfo->frameWidth,
+			currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight, SRCCOPY);
+
+		//GdiTransparentBlt : 비트맵의 특정색상을 제외하고 고속복사 해주는 함수
+		GdiTransparentBlt(
+			hdc,							//복사할 장소의 DC
+			destX,							//복사될 좌표 시작점 X
+			destY,							//복사될 좌표 시작점 Y
+			_scaleImage->frameWidth,		//복사될 이미지 가로크기
+			_scaleImage->frameHeight,		//복사될 이미지 세로크기
+			_scaleImage->hMemDC,			//복사될 대상 DC
+			0, 0,							//복사 시작지점
+			_scaleImage->frameWidth,		//복사 영역 가로크기
+			_scaleImage->frameHeight,		//복사 영역 세로크기
+			_transColor);					//복사할때 제외할 색상 (마젠타)
+	}
+	else //원본 이미지 그래도 출력할꺼냐?
+	{
+		//원본이미지를 Scale값 만큼 확대/축소시켜서 그려준다
+		StretchBlt(hdc, destX, destY, _scaleImage->frameWidth, _scaleImage->frameHeight,
+			_imageInfo->hMemDC,
+			currentFrameX * _imageInfo->frameWidth,
+			currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight, SRCCOPY);
 	}
 }

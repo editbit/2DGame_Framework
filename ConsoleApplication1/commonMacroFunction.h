@@ -58,3 +58,30 @@ inline void Rectangle(HDC hdc, const RECT& rc)
 {
 	Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
 }
+
+inline float getDistance(float startX, float startY, float endX, float endY)
+{
+	return sqrtf((endX - startX)*(endX - startX) + (endY - startY)*(endY - startY));
+}
+
+inline float getDistance(float startX, float endX)
+{
+	if (startX - endX > 0)
+		return startX - endX;
+	else
+		return endX - startX;
+}
+
+inline float getAnglef(float startX, float startY, float endX, float endY)
+{
+	float _angle =  atan2(startY - endY, endX - startX);
+
+	if (_angle < 0)
+	{
+		_angle += 2 * 3.141592f;
+	}
+
+	return _angle;
+}
+
+
