@@ -87,7 +87,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
@@ -147,24 +147,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="commonMacroFunction.h" />
+    <ClInclude Include="EffectManager.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="PixelCollision.h" />
+    <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="RandomFunction.h" />
+    <ClInclude Include="MySceneManager.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="SaveData.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tank.h" />
+    <ClInclude Include="TxtData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="PixelCollision.cpp" />
+    <ClCompile Include="MySceneManager.cpp" />
+    <ClCompile Include="ProgressBar.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="SaveData.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="TxtData.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="MainGame.cpp" />

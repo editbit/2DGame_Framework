@@ -23,6 +23,12 @@ HRESULT GameNode::init(bool managerInit)
 		KEYMANAGER->init();						// 키 매니저 초기화
 		RND->init();
 		IMAGEMANAGER->init();					// 이미지 매니저 초기화
+		CAM->init();
+		SAVEDATA->init();
+		TXTDATA->init();
+		SCENEMANAGER->init();
+		EFFECT->init();
+		RENDER->init();
 	}
 
 	return S_OK;
@@ -46,6 +52,24 @@ void GameNode::release()
 		// 이미지 매니저 싱글톤 해제
 		IMAGEMANAGER->release();
 		IMAGEMANAGER->releaseSingleton();
+
+		CAM->release();
+		CAM->releaseSingleton();
+
+		SAVEDATA->release();
+		SAVEDATA->releaseSingleton();
+
+		TXTDATA->release();
+		TXTDATA->releaseSingleton();
+
+		SCENEMANAGER->release();
+		SCENEMANAGER->releaseSingleton();
+
+		EFFECT->release();
+		EFFECT->releaseSingleton();
+
+		RENDER->release();
+		RENDER->releaseSingleton();
 	}
 
 	//DC 해제

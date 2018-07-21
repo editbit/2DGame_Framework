@@ -74,7 +74,11 @@ inline float getDistance(float startX, float endX)
 
 inline float getAnglef(float startX, float startY, float endX, float endY)
 {
-	float _angle =  atan2(startY - endY, endX - startX);
+	//float _angle =  atan2(startY - endY, endX - startX);
+	float _angle = atan2(startY - endY, endX - startX);
+
+	if (startX == endX && startY == endY)
+		return 0;
 
 	if (_angle < 0)
 	{
@@ -84,4 +88,8 @@ inline float getAnglef(float startX, float startY, float endX, float endY)
 	return _angle;
 }
 
+inline void Ellipse(HDC hdc, RECT rc)
+{
+	Ellipse(hdc, rc.left, rc.top, rc.right, rc.bottom);
+}
 

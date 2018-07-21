@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SceneManager.h"
+#include "GameNode.h"
 
 HRESULT SceneManager::init()
 {
@@ -8,88 +9,71 @@ HRESULT SceneManager::init()
 
 void SceneManager::release()
 {
-	this->deleteAll();
+	// 정상적인 방법
+	MiSceneIter iter = mSceneList.begin();
+	for (; iter != mSceneList.end();)
+	{
+		if (iter->second != NULL)
+		{
+			if (iter->second == currentScene) iter->second->release();
+			SAFE_DELETE(iter->second);
+			iter = mSceneList.erase(iter);
+		}
+		else
+		{
+			iter++;
+		}
+
+	}
+	mSceneList.clear();
+
+	/*for each(auto scene in mSceneList)
+	{
+		scene.second->release();
+		SAFE_DELETE(scene.second);
+	}*/
+
 }
 
-GameNode * SceneManager::addScene(string strKey, GameNode * scene)
+void SceneManager::update()
 {
-	GameNode * s = findScene(strKey);
+	// 현재 씬이 존재하면 해당하는 현재 씬을 업데이트
+	if (currentScene) currentScene->update();
+}
 
-	if (s) return s;
+void SceneManager::render()
+{
+	if (currentScene) currentScene->render();
+}
 
-	if (!scene)
-	{
-		return NULL;
-	}
+GameNode * SceneManager::addScene(string sceneName, GameNode * scene)
+{
+	//씬이 없으면 그냥 널 리턴
+	if (!scene) return NULL;
 
-	_mSceneList.insert(make_pair(strKey, scene));
+	// 씬이 있으면 맵에 담기
+	mSceneList.insert(make_pair(sceneName, scene));
 
 	return scene;
 }
 
-
-GameNode * SceneManager::setCurrentScene(string strkey)
+HRESULT SceneManager::loadScene(string sceneName)
 {
-	mapSceneIter key = _mSceneList.find(strkey);
+	MiSceneIter find = mSceneList.find(sceneName);
 
-	if (key != _mSceneList.end())
+	// 못 찾았다면 E_FAIL
+	if (find == mSceneList.end()) return E_FAIL;
+
+	// 바꾸려는 씬과 현재 씬이 같다면 E_FAIL
+	if (find->second == currentScene) return E_FAIL;
+
+	currentScene->release();
+
+	// 씬 최기화 후 변경
+	if (SUCCEEDED(find->second->init()))
 	{
-		currentScene = key->second;
-		return key->second;
+		currentScene = find->second;
+		return S_OK;
 	}
-
-	return NULL;
-}
-
-GameNode * SceneManager::findScene(string strKey)
-{
-	mapSceneIter key = _mSceneList.find(strKey);
-
-	if (key != _mSceneList.end())
-	{
-		return key->second;
-	}
-
-	return NULL;
-}
-
-BOOL SceneManager::deleteScene(string strKey)
-{
-	mapSceneIter key = _mSceneList.find(strKey);
-
-	if (key != _mSceneList.end())
-	{
-		key->second->release();
-		SAFE_DELETE(key->second);
-
-		_mSceneList.erase(key);
-
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
-bool SceneManager::deleteAll()
-{
-	mapSceneIter iter = _mSceneList.begin();
-
-	for (; iter != _mSceneList.end();)
-	{
-		if (iter->second != NULL)
-		{
-			iter->second->release();
-			SAFE_DELETE(iter->second);
-
-			iter = _mSceneList.erase(iter);
-		}
-		else
-		{
-			++iter;
-		}
-	}
-
-	_mSceneList.clear();
-
-	return TRUE;
+	return E_FAIL;
 }

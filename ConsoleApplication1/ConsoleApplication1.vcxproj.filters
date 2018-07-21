@@ -31,19 +31,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="GameFramework2D\MainGame\PixelCollision">
+      <UniqueIdentifier>{e339d7c8-f696-4692-a21d-7fa7bf07e184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework2D\HPBar">
+      <UniqueIdentifier>{d7bed290-d72d-4d69-b596-3580c9e36aaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework2D\SingletonData">
+      <UniqueIdentifier>{67f67617-dc66-4d70-bba0-6edc460ed4fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework2D\TXTData">
+      <UniqueIdentifier>{722709ec-975a-42b6-b610-d2befae05ce2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h">
       <Filter>GameFramework2D\Manager\Util</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>GameFramework2D\MainGame</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>GameFramework2D\MainGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SingletonBase.h">
-      <Filter>GameFramework2D\Manager</Filter>
     </ClInclude>
     <ClInclude Include="KeyManager.h">
       <Filter>GameFramework2D\Manager</Filter>
@@ -63,7 +69,43 @@
     <ClInclude Include="ImageManager.h">
       <Filter>GameFramework2D\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="PixelCollision.h">
+      <Filter>GameFramework2D\MainGame\PixelCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>GameFramework2D\MainGame\WinMain</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MySceneManager.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>GameFramework2D\HPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveData.h">
+      <Filter>GameFramework2D\SingletonData</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TxtData.h">
+      <Filter>GameFramework2D\TXTData</Filter>
+    </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectManager.h">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
       <Filter>GameFramework2D\Manager</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,7 +134,37 @@
     <ClCompile Include="ImageManager.cpp">
       <Filter>GameFramework2D\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="PixelCollision.cpp">
+      <Filter>GameFramework2D\MainGame\PixelCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MySceneManager.cpp">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>GameFramework2D\HPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveData.cpp">
+      <Filter>GameFramework2D\SingletonData</Filter>
+    </ClCompile>
+    <ClCompile Include="TxtData.cpp">
+      <Filter>GameFramework2D\TXTData</Filter>
+    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>GameFramework2D\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
       <Filter>GameFramework2D\Manager</Filter>
     </ClCompile>
   </ItemGroup>

@@ -820,6 +820,7 @@ void Image::loopRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY)
 	}
 }
 
+
 void Image::loopAlphaRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY, BYTE alpha)
 {
 	//offset 값이 음수인 경우 보정하기

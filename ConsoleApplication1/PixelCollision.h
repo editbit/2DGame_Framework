@@ -1,28 +1,17 @@
 #pragma once
 #include "GameNode.h"
-#include "PixelCollision.h"
-#include "Tank.h"
-
-class MainGame : public GameNode
+class PixelCollision :
+	public GameNode
 {
-private:
-	Image * _bgImage;
-	Image * stage;
-
-
 	Image *bgImage;
 	Image *miniBgImage;
 	Image* _mountain;			// 백그라운드 이미지
-
-	Tank * tank;
 
 	Camera * cam;
 
 	RECT winsize;
 
 	int curTurn;
-
-	int effectCount;
 
 	int loopX, loopY;
 public:
@@ -31,6 +20,7 @@ public:
 	virtual void update();
 	virtual void render();
 
-	MainGame() {}
-	virtual ~MainGame() {}
+	PixelCollision() {}
+	~PixelCollision() {}
 };
+

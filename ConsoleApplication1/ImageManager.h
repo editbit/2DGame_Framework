@@ -1,5 +1,6 @@
 #pragma once
 #include "SingletonBase.h"
+#include "Image.h"
 
 //=============================================================
 //	## ImangeManager ## ( 이미지 매니저 )
